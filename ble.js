@@ -37,7 +37,7 @@ var config = {
 		responsive: true,
 		title: {
 			display: true,
-			text: 'Ground Current(A)'
+			text: 'Value'
 		},
 		tooltips: {
 			mode: 'index',
