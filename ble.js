@@ -24,7 +24,7 @@ var config = {
 	data: {
 		labels: [],
 		datasets: [{
-			label: 'Ig',
+			label: '',
 			backgroundColor: "#ff8000",
 			borderColor: "#ff8000",
 			data: [
