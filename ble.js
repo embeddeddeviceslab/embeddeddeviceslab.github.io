@@ -108,7 +108,6 @@ function connect() {
 			  stop = 0;
 			  			var ctx = document.getElementById('canvas').getContext('2d');
 			myChart = new Chart(ctx, config);
-			  timer = setInterval(interval_timer, 1 * 1000);
             /*console.log(characteristic)
             var buffer = new Uint8Array(3);
             buffer[0] = 0xA2; //event count cmd
@@ -126,19 +125,7 @@ function connect() {
 function stop_timer()
 {
 	stop = 1;
-	clearInterval(timer);
-}
-function interval_timer()
-{
-	 console.log("interval_timer");
-	 //Richiesta act
-	 var buffer = new Uint8Array(3);
-	buffer[0] = 0xA2; //event count cmd
-	buffer[1] = 0x00;
-	buffer[2] = 0x05; //wait for 3 byte
-	state = 1;
-	console.log(buffer)
-	characteristic_obj.writeValue(buffer);
+	
 }
 // subscribe to changes from the meter:
 function subscribeToChanges(characteristic) {
@@ -154,39 +141,25 @@ function handleData(event) {
     console.log(event_num)
     var buf = new Uint8Array(event.target.value.buffer);
     console.log(buf);
-    if (state == 1) {
-        console.log("First Request Answered")
-        //TODO: check della risposta
-        var buffer = new Uint8Array(5);
-        buffer[0] = 0xA2; //event count cmd
-		  buffer[1] = 0x00;
-        buffer[2] = 93;
-		  var result = CalcCrc(buffer, 3);
-        buffer[3] = result[0]; //crc da calcolare
-        buffer[4] = result[1]; //crc da calcolare
-        state = 2;
-		  console.log(buffer)
-        characteristic_obj.writeValue(buffer);
-    } else if (state == 2) {
-		 //decodifica del dato
-		  var date = Unix_timestamp(buf[4] + buf[3] * 256 + buf[2] * 256 * 256 + buf[1] * 256 * 256 * 256, 0).toString();
-		  var current = ((buf[12] + buf[11] * 256 + buf[10] * 256 * 256 + buf[9] * 256 * 256 * 256) / 100).toString();	
-		  console.log(date)
-		  console.log(current)	
-				config.data.labels.push(date);
 
-				config.data.datasets.forEach(function(dataset) {
-					dataset.data.push(current);
-				});
+	 //decodifica del dato
+		//var date = Unix_timestamp(buf[4] + buf[3] * 256 + buf[2] * 256 * 256 + buf[1] * 256 * 256 * 256, 0).toString();
+		//var current = ((buf[12] + buf[11] * 256 + buf[10] * 256 * 256 + buf[9] * 256 * 256 * 256) / 100).toString();	
+		//console.log(date)
+		//console.log(current)	
+		config.data.labels.push(buf[0]);
 
-				myChart.update();
-			
+			config.data.datasets.forEach(function(dataset) {
+				dataset.data.push(buf[0]);
+			});
+
+			myChart.update();
+		
 			if(stop == 1)
 			{
 				stop = 0;
 				disconnect();
 			}
-    }
 }
 
 // disconnect function:
