@@ -3,7 +3,7 @@ var myDevice;
 var myService = "0000181a-0000-1000-8000-00805f9b34fb"; //environmental sensing
 var myCharacteristic = "00002a6e-0000-1000-8000-00805f9b34fb"; // temperature characteristic from the environmental sensing
 var myTemperature;
-
+var connect_act = 0;
 function getTemperature() {
 	var temperatureControl = document.getElementById('temp'),
 		iTemp = 0;
@@ -126,6 +126,17 @@ function draw() {
 	}
 }
 
+function action() {
+	if(connect == 0)
+	{
+		connect();
+	}
+	else
+	{
+		disconnect();
+		connect_act = 0;
+	}
+
 function connect() {
     navigator.bluetooth.requestDevice({
             // filters: [myFilters]       // you can't use filters and acceptAllDevices together
@@ -170,8 +181,11 @@ function connect() {
 // subscribe to changes 
 function subscribeToChanges(characteristic) {
     console.log("subscribe")
+		connect_act = 1;
+		document.getElementById("act_button").value="Disconnect";
     characteristic.oncharacteristicvaluechanged = handleData;
 }
+
 
 // handle incoming data:
 function handleData(event) {
@@ -190,5 +204,6 @@ function disconnect() {
         // disconnect:
         characteristic_obj.stopNotifications();
         myDevice.gatt.disconnect();
+				document.getElementById("act_button").value="Get Temperature";
     }
 }
