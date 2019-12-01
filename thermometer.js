@@ -153,6 +153,7 @@ function connect() {
             for (c in characteristics) {
                 console.log(characteristics[c].uuid)
                 if (myCharacteristic == characteristics[c].uuid) {
+									  console.log("entro");
                     characteristic_obj = characteristics[c];
                     characteristics[c].startNotifications()
                         .then(subscribeToChanges);
