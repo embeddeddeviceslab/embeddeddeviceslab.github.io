@@ -177,11 +177,9 @@ function subscribeToChanges(characteristic) {
 function handleData(event) {
     // get the data buffer from the meter:
     console.log("get data")
-    console.log(event)
-    console.log(event_num)
     var buf = new Uint8Array(event.target.value.buffer);
-    console.log(buf);
-		draw =  buf[0] +  buf[1]*256;
+    myTemperature = buf[0] +  buf[1]*256;
+		console.log(buf);
 		draw();
 }
 
