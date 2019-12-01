@@ -183,7 +183,7 @@ function connect() {
 function subscribeToChanges(characteristic) {
     console.log("subscribe")
 		connect_act = 1;
-		document.getElementById("act_button").value="Disconnect";
+		document.getElementById("act_button").innerHTML ="Disconnect";
     characteristic.oncharacteristicvaluechanged = handleData;
 }
 
@@ -205,6 +205,6 @@ function disconnect() {
         // disconnect:
         characteristic_obj.stopNotifications();
         myDevice.gatt.disconnect();
-				document.getElementById("act_button").value="Get Temperature";
+				document.getElementById("act_button").innerHTML ="Get Temperature";
     }
 }
