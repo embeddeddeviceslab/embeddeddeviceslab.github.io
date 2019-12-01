@@ -1,6 +1,6 @@
 var img;
 var myDevice;
-var myService = 0x181a; //environmental sensing
+var myService = '181a'; //environmental sensing
 var myCharacteristic = "00002a6e-0000-1000-8000-00805f9b34fb"; // temperature characteristic from the environmental sensing
 var myTemperature;
 
