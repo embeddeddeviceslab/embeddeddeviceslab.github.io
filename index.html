@@ -1,21 +1,21 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-	 <link rel="stylesheet" type="text/css" href="styles.css">
-	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script type="text/javascript" src="ble.js">
-	 
-    </script>
-
-    <title>ESP32 Web BLE Chart</title>
-  </head>
-  <body>
-  <div class="container">
-	 <button class="button button3" onClick='connect()'>Start</button>
-	 <button class="button button3" onClick='stop_timer()'>Stop</button>
-	 <canvas id="canvas"></canvas>
-	 </ul>
-	</div>
-  </body>
+<html lang="en">
+    <head>
+        <meta charset='utf-8' />
+        <title>Canvas Thermometer </title>
+        <script src='thermometer.js'></script>
+    </head>
+    <body onload='draw();'>
+        <div>
+            <canvas id='thermometer' width='200' height='900'></canvas>
+            <div style='position: absolute; top: 200px; left: 250px;'>
+                <form id='drawThermometer'>
+                    <input type="text" id="temp" name="temp" value="-30" maxlength="3"/>
+                    <br>
+                    <input id="defaultSlider" type="range" min="-30" max="50" onchange="setTempAndDraw();" />
+                    <br>
+                    <input type="button" value="Draw" onclick="draw();">
+                </form>
+            </div>
+        </div>
+    </body>
 </html>
