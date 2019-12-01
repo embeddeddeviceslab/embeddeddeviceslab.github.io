@@ -127,7 +127,7 @@ function draw() {
 }
 
 function action() {
-	if(connect == 0)
+	if(connect_act == 0)
 	{
 		connect();
 	}
@@ -136,6 +136,7 @@ function action() {
 		disconnect();
 		connect_act = 0;
 	}
+}
 
 function connect() {
     navigator.bluetooth.requestDevice({
