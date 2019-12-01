@@ -27,7 +27,7 @@ function generateT()
 {
 		myTemperature = 15 + Math.ceil(Math.random() * 10)
 		document.getElementById("tValue").innerHTML = myTemperature.toString() + "°C";
-		console.log(buf);
+		console.log(myTemperature);
 		draw();
 }
 function getRatio(iTemp) {
