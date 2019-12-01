@@ -20,7 +20,16 @@ function getTemperature() {
 
 	return iTemp;
 }
-
+function simulate(){
+	setInterval(generateT, 1000);
+}
+function generateT()
+{
+		myTemperature = 15 + Math.ceil(Math.random() * 10)
+		document.getElementById("tValue").innerHTML = myTemperature.toString() + "°C";
+		console.log(buf);
+		draw();
+}
 function getRatio(iTemp) {
 	/* The image is not in proportion this the gauge to pixel 
 	 * ratio need slight adjustment
