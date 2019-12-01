@@ -5,9 +5,7 @@ var myCharacteristic = "00002a6e-0000-1000-8000-00805f9b34fb"; // temperature ch
 var myTemperature;
 var connect_act = 0;
 function getTemperature() {
-	var temperatureControl = document.getElementById('temp'),
 		iTemp = 0;
-	temperatureControl.value = myTemperature;
 	// Ensure the temperature value is a number
 	if (myTemperature !== null) {
 		iTemp = myTemperature * 1.0;
