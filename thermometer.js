@@ -1,12 +1,16 @@
 var img;
+var myDevice;
+var myService = "0x181a"; //environmental sensing
+var myCharacteristic = "00002a6e-0000-1000-8000-00805f9b34fb"; // temperature characteristic from the environmental sensing
+var myTemperature;
 
 function getTemperature() {
 	var temperatureControl = document.getElementById('temp'),
 		iTemp = 0;
-
+	temperatureControl.value = myTemperature;
 	// Ensure the temperature value is a number
-	if (temperatureControl !== null) {
-		iTemp = temperatureControl.value * 1.0;
+	if (myTemperature !== null) {
+		iTemp = myTemperature * 1.0;
 	}
 
 	// Sanity checks
@@ -122,15 +126,69 @@ function draw() {
 	}
 }
 
-function setTempAndDraw() {
-	/* Function called when user clicks the draw button
-	 */
+function connect() {
+    navigator.bluetooth.requestDevice({
+            // filters: [myFilters]       // you can't use filters and acceptAllDevices together
+            optionalServices: [myService],
+            acceptAllDevices: true
+        })
+        .then(function(device) {
+            // save the device returned so you can disconnect later:
+            myDevice = device;
+            console.log(device);
+            // connect to the device once you find it:
+            return device.gatt.connect();
+        })
+        .then(function(server) {
+            // get the primary service:
+            return server.getPrimaryService(myService);
+        })
+        .then(function(service) {
+            // get the  characteristic:
+            console.log(service.getCharacteristics())
+            return service.getCharacteristics();
+        })
+        .then(function(characteristics) {
+            // subscribe to the characteristic:
+            for (c in characteristics) {
+                console.log(characteristics[c].uuid)
+                if (myCharacteristic == characteristics[c].uuid) {
+                    characteristic_obj = characteristics[c];
+                    characteristics[c].startNotifications()
+                        .then(subscribeToChanges);
+                    return characteristics[c];
+                }
+            }
+        })
+        .catch(function(error) {
+            // catch any errors:
+            console.error('Connection failed!', error);
+        });
+}
 
-	var temp = document.getElementById('temp'),
-		slider = document.getElementById('defaultSlider');
+// subscribe to changes 
+function subscribeToChanges(characteristic) {
+    console.log("subscribe")
+    characteristic.oncharacteristicvaluechanged = handleData;
+}
 
-	if (temp !== null && slider !== null) {
-		temp.value = slider.value;
+// handle incoming data:
+function handleData(event) {
+    // get the data buffer from the meter:
+    console.log("get data")
+    console.log(event)
+    console.log(event_num)
+    var buf = new Uint8Array(event.target.value.buffer);
+    console.log(buf);
+		draw =  buf[0] +  buf[1]*256;
 		draw();
-	}
+}
+
+// disconnect function:
+function disconnect() {
+    if (myDevice) {
+        // disconnect:
+        characteristic_obj.stopNotifications();
+        myDevice.gatt.disconnect();
+    }
 }
