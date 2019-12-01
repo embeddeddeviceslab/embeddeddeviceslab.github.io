@@ -195,6 +195,7 @@ function handleData(event) {
     var buf = new Uint8Array(event.target.value.buffer);
     myTemperature = buf[0] +  buf[1]*256;
 		myTemperature = myTemperature/100;
+		document.getElementById("tValue").innerHTML = myTemperature.toString() + "°C";
 		console.log(buf);
 		draw();
 }
